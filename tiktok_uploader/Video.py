@@ -5,6 +5,15 @@ from moviepy.editor import VideoFileClip, AudioFileClip
 from pytube import YouTube
 import time, os
 
+from pytube. innertube import _default_clients
+
+_default_clients[ "ANDROID"][ "context"]["client"]["clientVersion"] = "19.08.35"
+_default_clients["IOS"]["context"]["client"]["clientVersion"] = "19.08.35"
+_default_clients[ "ANDROID_EMBED"][ "context"][ "client"]["clientVersion"] = "19.08.35"
+_default_clients[ "IOS_EMBED"][ "context"]["client"]["clientVersion"] = "19.08.35"
+_default_clients["IOS_MUSIC"][ "context"]["client"]["clientVersion"] = "6.41"
+_default_clients[ "ANDROID_MUSIC"] = _default_clients[ "ANDROID_CREATOR" ]
+
 class Video:
     def __init__(self, source_ref, video_text):
         self.config = Config.get()
@@ -61,6 +70,7 @@ class Video:
         streams = YouTube(url).streams.filter(progressive=True)
         valid_streams = sorted(streams, reverse=True, key=lambda x: x.resolution is not None)
         filtered_streams = sorted(valid_streams, reverse=True, key=lambda x: int(x.resolution.split("p")[0]))
+        filtered_streams = False
         if filtered_streams:
             selected_stream = filtered_streams[0]
             print("Starting Download for Video...")
@@ -93,8 +103,8 @@ class Video:
                 composite_video = VideoFileClip(downloaded_v_path).set_audio(AudioFileClip(downloaded_a_path))
                 composite_video.write_videofile(video_path)
                 # Deleting raw video and audio files.
-                # os.remove(downloaded_a_path)
-                # os.remove(downloaded_v_path)
+                os.remove(downloaded_a_path)
+                os.remove(downloaded_v_path)
                 return video_path
             else:
                 print("All videos have are too low of quality.")

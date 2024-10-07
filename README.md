@@ -1,3 +1,32 @@
+# TikTok_Uploader Modifications
+
+This forked repo modified to serve automaticlly do below stuff:
+
+1. Connects with YouTube data API and searchs YouTube shorts videos of given channels.
+2. Connects with selenium and searchs TikTok videos of given account.
+3. Compares titles and finds out the earliest one that in YouTube shorts but not in TikTok videos.
+4. Uploads it to TikTok with TiktokAutoUploader v2.0 below.
+
+## Installation Notes:
+
+1. First follow the steps in TiktokAutoUploader v2.0 below and test it.
+2. Then modify these for your accounts;
+    - `/creds/credentials.json` 
+    - `/creds/token_youtube.json` 
+    - Install [imagemagick](https://imagemagick.org/script/download.php) and add path to `.env` as *IMAGEMAGICK_BINARY="PATH_TO_IMAGEMAGICK"*
+    - Specify *tiktok_user_name* and *ytb_channel_id* at `upload_periodically.py`
+3. Run `upload_periodically.py`, preferably add to cronjobs.
+
+## Result
+Checkout [My TikTok](https://www.tiktok.com/@wishyouubest).
+## Related
+My YouTube auto uploader [repo](https://github.com/Alperenlcr/YouTube_Uploader).\
+Content creation algorithm is private for now but it will be on public anytime.
+
+---
+---
+---
+
 # TiktokAutoUploader v2.0
 
 Fastest Tiktok AutoUploader using Requests, not ~~Selenium~~
