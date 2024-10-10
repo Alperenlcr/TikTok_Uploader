@@ -26,7 +26,7 @@ This forked repo modified to serve automaticlly do below stuff:
       sudo apt install chromium-chromedriver && \
       chromedriver --version
       ```
-3. Run `upload_periodically.py`, preferably add to cronjobs.
+3. Run `uploader.py`, preferably add to cronjobs.
 
 ## Result
 Checkout [My TikTok](https://www.tiktok.com/@wishyouubest).

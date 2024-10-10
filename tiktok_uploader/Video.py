@@ -57,19 +57,8 @@ class Video:
 
     def get_youtube_video(self, max_res=True):
         url = self.source_ref
-        streams = YouTube(url).streams.filter(progressive=True)
-        valid_streams = sorted(streams, reverse=True, key=lambda x: x.resolution is not None)
-        filtered_streams = sorted(valid_streams, reverse=True, key=lambda x: int(x.resolution.split("p")[0]))
-        filtered_streams = False
-        if filtered_streams:
-            selected_stream = filtered_streams[0]
-            print("Starting Download for Video...")
-            selected_stream.download(output_path=os.path.join(os.getcwd(), Config.get().videos_dir), filename="pre-processed.mp4")
-            filename = os.path.join(os.getcwd(), Config.get().videos_dir, "pre-processed"+".mp4")
-            return filename
-
-        video = YouTube(url).streams.filter(file_extension="mp4", adaptive=True).first()
-        audio = YouTube(url).streams.filter(file_extension="webm", only_audio=True, adaptive=True).first()
+        video = YouTube(url,use_po_token=True).streams.filter(file_extension="mp4", adaptive=True).first()
+        audio = YouTube(url,use_po_token=True).streams.filter(file_extension="webm", only_audio=True, adaptive=True).first()
         if video and audio:
             random_filename = str(int(time.time()))
             video_path = os.path.join(os.getcwd(), Config.get().videos_dir, "pre-processed.mp4")
