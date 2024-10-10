@@ -2,17 +2,9 @@ from .Config import Config
 
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, AudioFileClip
-from pytube import YouTube
+from pytubefix import YouTube
+from moviepy.editor import *
 import time, os
-
-from pytube. innertube import _default_clients
-
-_default_clients[ "ANDROID"][ "context"]["client"]["clientVersion"] = "19.08.35"
-_default_clients["IOS"]["context"]["client"]["clientVersion"] = "19.08.35"
-_default_clients[ "ANDROID_EMBED"][ "context"][ "client"]["clientVersion"] = "19.08.35"
-_default_clients[ "IOS_EMBED"][ "context"]["client"]["clientVersion"] = "19.08.35"
-_default_clients["IOS_MUSIC"][ "context"]["client"]["clientVersion"] = "6.41"
-_default_clients[ "ANDROID_MUSIC"] = _default_clients[ "ANDROID_CREATOR" ]
 
 class Video:
     def __init__(self, source_ref, video_text):
@@ -21,7 +13,6 @@ class Video:
         self.video_text = video_text
 
         self.source_ref = self.downloadIfYoutubeURL()
-        # Wait until self.source_ref is found in the file system.
         while not os.path.isfile(self.source_ref):
             time.sleep(1)
 
@@ -47,14 +38,12 @@ class Video:
                 meme_overlay = TextClip(txt=self.video_text, bg_color=self.config.imagemagick_text_background_color, color=self.config.imagemagick_text_foreground_color, size=(900, None), kerning=-1,
                             method="caption", font=self.config.imagemagick_font, fontsize=self.config.imagemagick_font_size, align="center")
             except OSError as e:
-                print("Please make sure that you have ImageMagick is not installed on your computer, or (for Windows users) that you didn't specify the path to the ImageMagick binary in file conf.py, or that the path you specified is incorrect")
-                print("https://imagemagick.org/script/download.php#windows")
+                print("Please make sure that ImageMagick is installed on your computer")
                 print(e)
                 exit()
             meme_overlay = meme_overlay.set_duration(self.clip.duration)
             self.clip = CompositeVideoClip([base_clip, self.clip.set_position(("center", "center")),
                                             meme_overlay.set_position(("center", bottom_meme_pos))])
-            # Continue normal flow.
 
         dir = os.path.join(self.config.post_processing_video_path, "post-processed")+".mp4"
         self.clip.write_videofile(dir, fps=24)
@@ -64,6 +53,7 @@ class Video:
     def is_valid_file_format(self):
         if not self.source_ref.endswith('.mp4') and not self.source_ref.endswith('.webm'):
             exit(f"File: {self.source_ref} has wrong file extension. Must be .mp4 or .webm.")
+
 
     def get_youtube_video(self, max_res=True):
         url = self.source_ref
@@ -78,39 +68,39 @@ class Video:
             filename = os.path.join(os.getcwd(), Config.get().videos_dir, "pre-processed"+".mp4")
             return filename
 
-
         video = YouTube(url).streams.filter(file_extension="mp4", adaptive=True).first()
         audio = YouTube(url).streams.filter(file_extension="webm", only_audio=True, adaptive=True).first()
         if video and audio:
-            random_filename = str(int(time.time()))  # extension is added automatically.
+            random_filename = str(int(time.time()))
             video_path = os.path.join(os.getcwd(), Config.get().videos_dir, "pre-processed.mp4")
             resolution = int(video.resolution[:-1])
-            # print(resolution)
             if resolution >= 360:
                 downloaded_v_path = video.download(output_path=os.path.join(os.getcwd(), self.config.videos_dir), filename=random_filename)
-                print("Downloaded Video File @ " + video.resolution)
                 downloaded_a_path = audio.download(output_path=os.path.join(os.getcwd(), self.config.videos_dir), filename="a" + random_filename)
-                print("Downloaded Audio File")
                 file_check_iter = 0
                 while not os.path.exists(downloaded_a_path) and os.path.exists(downloaded_v_path):
                     time.sleep(2**file_check_iter)
-                    file_check_iter = +1
+                    file_check_iter += 1
                     if file_check_iter > 3:
                         print("Error saving these files to directory, please try again")
                         return
-                    print("Waiting for files to appear.")
-
                 composite_video = VideoFileClip(downloaded_v_path).set_audio(AudioFileClip(downloaded_a_path))
                 composite_video.write_videofile(video_path)
-                # Deleting raw video and audio files.
                 os.remove(downloaded_a_path)
                 os.remove(downloaded_v_path)
                 return video_path
             else:
-                print("All videos have are too low of quality.")
+                print("All videos are too low of quality.")
                 return
         print("No videos available with both audio and video available...")
         return False
+
+    def downloadIfYoutubeURL(self):
+        if any(ext in self.source_ref for ext in Video._YT_DOMAINS):
+            print("Detected Youtube Video...")
+            video_dir = self.get_youtube_video()
+            return video_dir
+        return self.source_ref
 
     _YT_DOMAINS = [
         "http://youtu.be/", "https://youtu.be/", "http://youtube.com/", "https://youtube.com/",

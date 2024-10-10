@@ -5,7 +5,7 @@ from tiktok_uploader.Config import Config
 import sys, os
 
 if __name__ == "__main__":
-    _ = Config.load("./config.txt")
+    _ = Config.load(f"/home/{os.getlogin()}/TikTok_Uploader/config.txt")
     # print(Config.get().cookies_dir)
     parser = argparse.ArgumentParser(description="TikTokAutoUpload CLI, scheduled and immediate uploads")
     subparsers = parser.add_subparsers(dest="subcommand")

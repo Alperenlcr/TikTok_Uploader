@@ -11,10 +11,21 @@ This forked repo modified to serve automaticlly do below stuff:
 
 1. First follow the steps in TiktokAutoUploader v2.0 below and test it.
 2. Then modify these for your accounts;
+    - Change **$USERNAME** spaces in `config.txt`.
     - `/creds/credentials.json` 
     - `/creds/token_youtube.json` 
     - Install [imagemagick](https://imagemagick.org/script/download.php) and add path to `.env` as *IMAGEMAGICK_BINARY="PATH_TO_IMAGEMAGICK"*
     - Specify *tiktok_user_name* and *ytb_channel_id* at `upload_periodically.py`
+    - Install chrome and chromedriver for selenium:
+      ```sh
+      wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && \
+      sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
+      sudo apt update && \
+      sudo apt install google-chrome-stable && \
+      google-chrome --version && \
+      sudo apt install chromium-chromedriver && \
+      chromedriver --version
+      ```
 3. Run `upload_periodically.py`, preferably add to cronjobs.
 
 ## Result

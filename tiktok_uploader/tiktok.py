@@ -188,7 +188,7 @@ def upload_video(session_user, video, title, schedule_time=0, allow_comment=1, a
 	while True:
 		mstoken = session.cookies.get("msToken")
 		# xbogus = subprocess_jsvmp(os.path.join(os.getcwd(), "tiktok_uploader", "./x-bogus.js"), user_agent, f"app_name=tiktok_web&channel=tiktok_web&device_platform=web&aid=1988&msToken={mstoken}")
-		signatures = subprocess_jsvmp(os.path.join(os.getcwd(), "tiktok_uploader", "tiktok-signature", "browser.js"), user_agent, f"https://www.tiktok.com/api/v1/web/project/post/?app_name=tiktok_web&channel=tiktok_web&device_platform=web&aid=1988&msToken={mstoken}")
+		signatures = subprocess_jsvmp(f"/home/{os.getlogin()}/TikTok_Uploader/tiktok_uploader/tiktok-signature/browser.js", user_agent, f"https://www.tiktok.com/api/v1/web/project/post/?app_name=tiktok_web&channel=tiktok_web&device_platform=web&aid=1988&msToken={mstoken}")
 		tt_output = json.loads(signatures)["data"]
 		project_post_dict = {
 			"app_name": "tiktok_web",

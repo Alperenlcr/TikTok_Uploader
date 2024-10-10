@@ -1,6 +1,6 @@
-COOKIES_DIR= "./CookiesDir"
-VIDEOS_DIR= "./VideosDirPath"
-POST_PROCESSING_VIDEO_PATH= "./VideosDirPath"
+COOKIES_DIR= "/home/$USERNAME/TikTok_Uploader/CookiesDir"
+VIDEOS_DIR= "/home/$USERNAME/TikTok_Uploader/VideosDirPath"
+POST_PROCESSING_VIDEO_PATH= "/home/$USERNAME/TikTok_Uploader/VideosDirPath"
 IMAGEMAGICK_FONT= "Arial"
 IMAGEMAGICK_FONT_SIZE= 80
 IMAGEMAGICK_TEXT_FOREGROUND_COLOR= "white"

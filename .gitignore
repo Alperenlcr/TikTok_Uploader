@@ -129,6 +129,9 @@ dmypy.json
 .pyre/
 
 # Personal Development Files
+creds/
+creds/*
+tiktok_uploader/tiktok-signature/package-lock.json
 CookiesDir/
 CookiesDir/*
 VideosDirPath/
